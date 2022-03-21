@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="./stafftemplate.xhtml">
+        <ui:define name="title">
+            Student
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form  id="jp">
+                <div class="row">
+
+                    <p:messages id="msg" closable="true" showDetail="false"/>
+
+                    <h4>Add Student</h4>
+                    <div class="row"> 
+                        <div class="one-half column">
+                            <label for="sname">Student Name</label>
+                            <p:inputText id="sname" value="#{studentBean.name}" required="true" requiredMessage="Enter Student Name" class="u-full-width"></p:inputText>
+                        </div>
+
+                        <div class="one-half column">
+                            <label for="fname">Father's Name</label>
+                            <p:inputText id="fname" value="#{studentBean.fname}" required="true" requiredMessage="Enter Father's Name" class="u-full-width"></p:inputText>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="one-half column">
+                            <label for="mname">Mother's Name</label>
+                            <p:inputText id="mname" value="#{studentBean.mname}" required="true" requiredMessage="Enter Mother's Name" class="u-full-width"></p:inputText>
+                        </div>
+
+                        <div class="one-half column">
+                            <label for="address">Address</label>
+                            <p:inputText id="address" value="#{studentBean.address}" required="true" requiredMessage="Enter Address" class="u-full-width"></p:inputText>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="one-half column">
+                            <label for="contact">Contact</label>
+                            <p:inputText id="contact" value="#{studentBean.contact}" required="true" requiredMessage="Enter Contact" class="u-full-width"></p:inputText>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p:commandButton action="#{studentBean.saveInfo()}" value="Save" update="msg ccat" ajax="true" class="button-primary"></p:commandButton>
+                    </div>                
+                </div>
+                <div class="row"> 
+                    <p:dataTable value="#{studentBean.studentName}" var="o" paginator="true" rows="5" id="ccat" class="u-full-width" widgetVar="stuTable"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="3,5,10"  editable="true">
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('stuTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <f:facet name="header">  
+                            Student List  
+                        </f:facet>
+                        <p:ajax event="rowEdit" listener="#{studentBean.onEdit}" update=":jp:msg :jp:ccat" />  
+                        <p:ajax event="rowEditCancel" listener="#{studentBean.onCancel}" update=":jp:msg :jp:ccat" /> 
+<!--                        <p:column headerText="Id">
+                            <h:outputText value="{o.id}" />
+                        </p:column>-->
+                        <p:column filterBy="#{o.name}">
+                            <f:facet name="header">  
+                                Student Name  
+                            </f:facet>
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{o.name}"/>  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{o.name}" style="width:100%"/>  
+                                </f:facet>  
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column filterBy="#{o.fname}">
+                            <f:facet name="header">  
+                                Father's Name  
+                            </f:facet>
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{o.fname}"/>  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{o.fname}" style="width:100%"/>  
+                                </f:facet>  
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column filterBy="#{o.mname}">
+                            <f:facet name="header">  
+                                Mother's Name  
+                            </f:facet>
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{o.mname}"/>  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{o.mname}" style="width:100%"/>  
+                                </f:facet>  
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column filterBy="#{o.address}">
+                            <f:facet name="header">  
+                                Address  
+                            </f:facet>
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{o.address}"/>  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{o.address}" style="width:100%"/>  
+                                </f:facet>  
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column filterBy="#{o.contact}">
+                            <f:facet name="header">  
+                                Contact  
+                            </f:facet>
+                            <p:cellEditor>  
+                                <f:facet name="output">  
+                                    <h:outputText value="#{o.contact}"/>  
+                                </f:facet>  
+                                <f:facet name="input">  
+                                    <p:inputText value="#{o.contact}" style="width:100%"/>  
+                                </f:facet>  
+                            </p:cellEditor> 
+                        </p:column>
+                        <p:column headerText="Options" style="width:60px">  
+                            <p:rowEditor />  
+                        </p:column> 
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </ui:define>       
+    </ui:composition>
+</html>
+
